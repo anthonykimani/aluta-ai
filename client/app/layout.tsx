@@ -7,6 +7,7 @@ import { AppSidebar } from "@/components/app-sidebar";
 import Header from "@/components/header";
 import ContextProvider from "@/context";
 import { headers } from "next/headers";
+import { ThemeProvider } from "@/components/theme-provider";
 
 const geistVF = localFont({
   src: "../public/fonts/GeistVF.woff",
@@ -43,13 +44,20 @@ export default async function RootLayout({
         className={`${geistVF.variable} ${geistMonoVF.variable} ${inter.variable} font-mono antialiased`}
       >
         <ContextProvider cookies={cookies}>
-          <SidebarProvider>
-            <AppSidebar />
-            <main className="w-full">
-              <Header />
-              {children}
-            </main>
-          </SidebarProvider>
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="system"
+            enableSystem
+            disableTransitionOnChange
+          >
+            <SidebarProvider>
+              <AppSidebar />
+              <main className="w-full">
+                <Header />
+                {children}
+              </main>
+            </SidebarProvider>
+          </ThemeProvider>
         </ContextProvider>
       </body>
     </html>

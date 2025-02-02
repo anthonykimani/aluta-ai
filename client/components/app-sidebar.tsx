@@ -1,4 +1,6 @@
-import { Calendar, Home, Inbox, Search, Settings } from "lucide-react"
+'use client'
+
+import { Calendar, Home, Inbox, Search, Settings } from "lucide-react";
 
 import {
   Sidebar,
@@ -9,7 +11,9 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-} from "@/components/ui/sidebar"
+} from "@/components/ui/sidebar";
+import { ScrambleText } from "./scramble";
+import { useState } from "react";
 
 // Menu items.
 const items = [
@@ -38,22 +42,39 @@ const items = [
     url: "#",
     icon: Settings,
   },
-]
+];
 
 export function AppSidebar() {
+  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
   return (
     <Sidebar>
       <SidebarContent>
         <SidebarGroup>
-          <SidebarGroupLabel>application</SidebarGroupLabel>
+          <SidebarGroupLabel>
+            <ScrambleText
+              text="aluta ai"
+              className="whitespace-pre-wrap md:whitespace-nowrap"
+            />
+          </SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
-              {items.map((item) => (
+              {items.map((item, index) => (
                 <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton asChild>
-                    <a href={item.url}>
+                    <a
+                      onMouseEnter={() => setHoveredIndex(index)}
+                      onMouseLeave={() => setHoveredIndex(null)}
+                      href={item.url}
+                    >
                       <item.icon />
-                      <span>{item.title}</span>
+                      {hoveredIndex === index ? (
+                        <ScrambleText
+                          text={item.title}
+                          className="whitespace-pre-wrap md:whitespace-nowrap"
+                        />
+                      ) : (
+                        <span>{item.title}</span>
+                      )}
                     </a>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
@@ -63,5 +84,5 @@ export function AppSidebar() {
         </SidebarGroup>
       </SidebarContent>
     </Sidebar>
-  )
+  );
 }
