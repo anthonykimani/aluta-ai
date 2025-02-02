@@ -1,18 +1,29 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Inter } from "next/font/google";
+import localFont from "next/font/local";
 import "./globals.css";
 import { SidebarProvider } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/app-sidebar";
 import Header from "@/components/header";
+import ContextProvider from "@/context";
+import { headers } from "next/headers";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
+const geistVF = localFont({
+  src: "../public/fonts/GeistVF.woff",
+  variable: "--font-geist-vf",
+  weight: "100 900",
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+const geistMonoVF = localFont({
+  src: "../public/fonts/GeistMonoVF.woff",
+  variable: "--font-geist-mono-vf",
+  weight: "100 900",
+});
+
+const inter = Inter({
   subsets: ["latin"],
+  display: "swap",
+  variable: "--font-inter",
 });
 
 export const metadata: Metadata = {
@@ -20,23 +31,26 @@ export const metadata: Metadata = {
   description: "aluta ai assistant",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const cookies = (await headers()).get("cookie");
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${geistVF.variable} ${geistMonoVF.variable} ${inter.variable} font-mono antialiased`}
       >
-        <SidebarProvider>
-          <AppSidebar />
-          <main className="w-full">
-            <Header />
-            {children}
-          </main>
-        </SidebarProvider>
+        <ContextProvider cookies={cookies}>
+          <SidebarProvider>
+            <AppSidebar />
+            <main className="w-full">
+              <Header />
+              {children}
+            </main>
+          </SidebarProvider>
+        </ContextProvider>
       </body>
     </html>
   );

@@ -1,17 +1,17 @@
-import React from 'react'
-import { SidebarTrigger } from '../ui/sidebar'
-import { Avatar } from '../ui/avatar'
+import React from "react";
+import { SidebarTrigger } from "../ui/sidebar";
 
 const Header = () => {
   return (
-    <nav className='flex justify-between items-center w-full'>
-        <SidebarTrigger />
+    <nav className="flex justify-between items-center p-2 w-full">
+      <SidebarTrigger />
 
-        <div>
-          <Avatar />
-        </div>
+      <div>
+        {/* @ts-expect-error this ignores web component errors */}
+        <appkit-button />
+      </div>
     </nav>
-  )
-}
+  );
+};
 
-export default Header
+export default Header;
